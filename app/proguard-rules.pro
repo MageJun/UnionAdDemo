@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontskipnonpubliclibraryclasses
+-verbose
+-dontoptimize
+-dontpreverify
+-ignorewarnings
+-optimizationpasses 5
+-keepattributes Signature,InnerClasses,*Annotation*
+-keep class com.unionad.sdk.ad.** {*;}
+-keep class com.unionad.demo.** {*;}
+#广点通
+-keep class com.qq.e.** {
+    public protected *;
+}
