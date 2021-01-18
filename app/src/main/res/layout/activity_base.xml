@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/base_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#DC09AAF3"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/base_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text=""
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <FrameLayout
+            android:id="@+id/root_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/load_only_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffffff"
+            >
+            <Button
+                android:id="@+id/btn_loadOnly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:gravity="center"
+                android:text="请求广告"
+                android:textSize="14sp"
+                android:onClick="onBaseClick"/>
+            <Button
+                android:id="@+id/btn_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="展示广告"
+                android:textSize="14sp"
+                android:onClick="onBaseClick"/>
+            <Button
+                android:id="@+id/btn_loadAndShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="请求并展示广告"
+                android:textSize="14sp"
+                android:onClick="onBaseClick"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
