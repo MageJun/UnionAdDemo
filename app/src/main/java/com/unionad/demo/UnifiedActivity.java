@@ -26,6 +26,30 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ *
+ * 信息流广告
+ * ----------注意事项----------
+ *
+ * 1、如果开发者需要缓存自渲染信息流数据，必须对缓存数据进行有效期的控制(缓存时长具体和运营沟通，一般最长支持45分钟)，一旦超过最大缓存时长则不能再次进行曝光；
+ *
+ * 2、开发者通过自渲染数据UnifiedAd构建完广告View之后，
+ *
+ *    <<<<<<<bindAdToView>>>>>>>，否则会导致无点击事件等异常，
+ *
+ * 3、同时开发者需要将 bindAdToView 接口所返回的 View 进行展示，
+ *
+ *    <<<<<<<而不是开发者自己构建的广告 View>>>>>>>;
+ *
+ * 4、如果使用的是广点通广告，开发者使用 UnifiedAd 所构造出的广告 View，这个View及其子View中
+ *
+ *    <<<<<<<不能包含 com.qq.e.ads.nativ.widget.NativeAdContainer>>>>>>>，否则会影响点击和计费
+ *
+ * 5、自渲染信息流发起请求示例，构建builder直接使用applicationContext
+ *
+ * 6、AdRequest 每次请求对应一个新的 new AdRequest 本次请求一旦释放，将不能再次使用，必须重新 new 否则会出现运行时异常.
+ */
 public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
     private UnifiedAd unifiedAd;
     @Override
@@ -49,11 +73,11 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
     }
 
     void loadAd(){
-        AdRequest adRequest = AdClient.makeAdRequestBuilder(this)
-                .setAdCount(1)
-                .setUnifiedAdListener(this)
-                .setType(AdType.INFORMATION_FLOW)
-                .setPlacementId("D2110010")
+        AdRequest adRequest = AdClient.makeAdRequestBuilder(this)//展示广告的Activity
+                .setPlacementId("D2110010")//广告ID
+                .setAdCount(1)//广告请求数
+                .setType(AdType.INFORMATION_FLOW)//广告类型
+                .setUnifiedAdListener(this)//广告状态监听器
                 .build();
         AdClient.loadAd(adRequest);
     }
@@ -63,17 +87,18 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
             return;
         }
         unifiedAd = ad;
-        Log.e("UNIFIED","ecpm = "+unifiedAd.getExtraData().get("ecpm"));
         ViewGroup adContainer = findViewById(R.id.adContainer);
         ViewGroup adView = findViewById(R.id.adView);
         ImageView imageView = findViewById(R.id.ad_image);
         TextView textView = findViewById(R.id.ad_title);
         adContainer.removeAllViews();
+
         textView.setText(ad.getTitle());
         List<View> clickViews = new ArrayList<>();
         clickViews.add(adView);
         clickViews.add(imageView);
         clickViews.add(textView);
+
         View  view = ad.bindAdToView(this, adView, null, clickViews, findViewById(R.id.skip), new UnifiedAd.AdEventListener() {
             @Override
             public void onAdExposed() {
