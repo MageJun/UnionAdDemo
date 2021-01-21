@@ -21,6 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom">
+            <com.unionad.sdk.ad.video.UnifiedAdVideoView
+                android:id="@+id/media_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"/>
+
 
             <ImageView
                 android:id="@+id/ad_image"

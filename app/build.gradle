@@ -50,5 +50,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation(name:'GDTSDK.unionNoPlugin.4.270.1140', ext:'aar')
-    implementation(name:'union_demo_v1_2101181952_release',ext: 'aar')
+    implementation(name:'union_demo_v1_210121_release',ext: 'aar')
 }

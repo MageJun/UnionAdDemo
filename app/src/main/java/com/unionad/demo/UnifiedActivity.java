@@ -18,6 +18,9 @@ import com.unionad.sdk.ad.AdRequest;
 import com.unionad.sdk.ad.AdType;
 import com.unionad.sdk.ad.feedlist.UnifiedAd;
 import com.unionad.sdk.ad.feedlist.UnifiedAdListener;
+import com.unionad.sdk.ad.video.UnifiedAdVideoListener;
+import com.unionad.sdk.ad.video.UnifiedAdVideoView;
+import com.unionad.sdk.ad.video.UnifiedVideoOptions;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -72,14 +75,41 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
         showAd(unifiedAd);
     }
 
+    /**
+     * 特别重要！！！
+     * 要在Activity#onResu方法中，调用UnifiedAd#resume方法，
+     * 防止点击之后广告状态错乱
+     *
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(unifiedAd!=null){
+            unifiedAd.resume();
+        }
+    }
     void loadAd(){
         AdRequest adRequest = AdClient.makeAdRequestBuilder(this)//展示广告的Activity
-                .setPlacementId("D2110010")//广告ID
+                .setPlacementId("D2110002")//广告ID 测试ID：视频信息流——D2110002；图文信息流——D2110010
                 .setAdCount(1)//广告请求数
                 .setType(AdType.INFORMATION_FLOW)//广告类型
                 .setUnifiedAdListener(this)//广告状态监听器
+                .setVideoOptions(getVideoOptions())
                 .build();
         AdClient.loadAd(adRequest);
+    }
+
+
+    private UnifiedVideoOptions getVideoOptions() {
+        UnifiedVideoOptions.Builder options =new  UnifiedVideoOptions.Builder();
+        options.setAutoPlayMuted(true);//默认true，是否静音播放
+        options.setAutoPlayPolicy(UnifiedVideoOptions.AutoPlayPolicy.ALWAYS);//自动播放策略,任何情况下/WIFI情况下/从不，默认任何情况下自动播放
+        options.setEnableDetailPage(true);//点击是否跳转详情预览页，设置false直接触发点击事件，开始下载或者打开落地页
+        options.setDetailPageMuted(true);//视频详情页是否默认静音
+        options.setEnableUserControl(true);//设置是否允许用户在预览页点击视频播放器区域控制视频的暂停或播放，默认为false，用户点击时的表现与点击clickableViews一致；如果为true，用户点击时将收到NativeADMediaListener.onVideoClicked回调，而不是NativeADEventListener.onADClicked回调，因为此时并不是广告点击
+        options.setNeedCoverImage(true);//设置是否显示封面，默认true
+        options.setNeedProgressBar(true);//设置是否显示进度条，默认true
+        return options.build();
     }
 
     void showAd(UnifiedAd ad){
@@ -88,11 +118,12 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
         }
         unifiedAd = ad;
         ViewGroup adContainer = findViewById(R.id.adContainer);
+        UnifiedAdVideoView mediaView = findViewById(R.id.media_view);
         ViewGroup adView = findViewById(R.id.adView);
         ImageView imageView = findViewById(R.id.ad_image);
         TextView textView = findViewById(R.id.ad_title);
         adContainer.removeAllViews();
-
+        imageView.setVisibility(View.GONE);
         textView.setText(ad.getTitle());
         List<View> clickViews = new ArrayList<>();
         clickViews.add(adView);
@@ -117,6 +148,67 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
             }
         });
         adContainer.addView(view);
+        if(ad.isVideoAd()){
+            Log.e("UNIFIED","video Ad");
+            ad.bindMediaAdToView(mediaView, new UnifiedAdVideoListener() {
+                @Override
+                public void onVideoInit() {
+
+                }
+
+                @Override
+                public void onVideoLoading() {
+
+                }
+
+                @Override
+                public void onVideoReady() {
+
+                }
+
+                @Override
+                public void onVideoLoaded(int videoDuration) {
+
+                }
+
+                @Override
+                public void onVideoStart() {
+
+                }
+
+                @Override
+                public void onVideoPause() {
+
+                }
+
+                @Override
+                public void onVideoResume() {
+
+                }
+
+                @Override
+                public void onVideoCompleted() {
+
+                }
+
+                @Override
+                public void onVideoError(AdError var1) {
+
+                }
+
+                @Override
+                public void onVideoStop() {
+
+                }
+
+                @Override
+                public void onVideoClicked() {
+
+                }
+            });
+        }else{
+            imageView.setVisibility(View.VISIBLE);
+        }
         new Thread(()->{
             try {
                 //Log.e("DEBUG", ad.getImageUrl());
