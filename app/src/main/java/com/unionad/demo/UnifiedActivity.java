@@ -90,7 +90,7 @@ public class UnifiedActivity extends BaseActivity implements UnifiedAdListener {
     }
     void loadAd(){
         AdRequest adRequest = AdClient.makeAdRequestBuilder(this)//展示广告的Activity
-                .setPlacementId("D2110002")//广告ID 测试ID：视频信息流——D2110002；图文信息流——D2110010
+                .setPlacementId("D2110019")//广告ID 测试ID：视频信息流——D2110002；图文信息流——D2110010
                 .setAdCount(1)//广告请求数
                 .setType(AdType.INFORMATION_FLOW)//广告类型
                 .setUnifiedAdListener(this)//广告状态监听器

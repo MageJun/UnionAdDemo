@@ -169,7 +169,17 @@ public class SplashADActivity extends BaseActivity implements SplashAdListener {
         }
     }
 
-
+    /**
+     * ----------非常重要----------
+     *   这个回调是一定触发的  可以在这里 finish.Splash Go to MainActivity
+     *
+     *   这个回调代码广告流程的结束，在这之前不允许任何释放关闭广告的操作！！！
+     */
+    @Override
+    public void onAdDismissed() {
+        showTolast("广告关闭");
+        next();
+    }
     private void next() {
         if (canJump) {
 
@@ -207,17 +217,7 @@ public class SplashADActivity extends BaseActivity implements SplashAdListener {
         }
         return super.onKeyDown(keyCode, event);
     }
-    /**
-     * ----------非常重要----------
-     *   这个回调是一定触发的  可以在这里 finish.Splash Go to MainActivity
-     *
-     *   这个回调代码广告流程的结束，在这之前不允许任何释放关闭广告的操作！！！
-     */
-    @Override
-    public void onAdDismissed() {
-        showTolast("广告关闭");
-        next();
-    }
+
     /**
      * ----------非常重要 针对所有广告----------
      *   广告点击之后会触发
